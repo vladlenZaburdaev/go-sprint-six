@@ -13,6 +13,11 @@ import (
 )
 
 func HandleIndex(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		http.NotFound(w, r)
+		return
+	}
+
 	htmlData, err := os.ReadFile("index.html")
 	if err != nil {
 		http.Error(w, "file read error", http.StatusInternalServerError)
