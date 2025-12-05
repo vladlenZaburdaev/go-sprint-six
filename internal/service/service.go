@@ -34,9 +34,11 @@ func DetectAndConvert(str string) (string, error) {
 	fmt.Printf("[DEBUG] Input: %q\n", str)
 	fmt.Printf("[DEBUG] MorseCode(): %v\n", MorseCode(str))
 
-	if strings.HasPrefix(str, "Конвертированный текст: ") {
-		fmt.Printf("[DEBUG] Looks like server response, returning as is\n")
-		return str, nil
+	prefix := "Конвертированный текст: "
+	if strings.HasPrefix(str, prefix) {
+		str = strings.TrimPrefix(str, prefix)
+		str = strings.TrimSpace(str)
+		fmt.Printf("[DEBUG] After removing prefix: %q\n", str)
 	}
 
 	if MorseCode(str) {
