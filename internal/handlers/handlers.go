@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/Yandex-Practicum/go1fl-sprint6-final/internal/service"
@@ -18,13 +19,19 @@ func HandleIndex(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "text/html, charset=utf-8")
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.Write(htmlData)
 }
 
 func HandleUpload(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "method not supported", http.StatusMethodNotAllowed)
+		return
+	}
+
+	err := r.ParseMultipartForm(10 << 20) // 10 MB
+	if err != nil {
+		http.Error(w, "error parsing form", http.StatusBadRequest)
 		return
 	}
 
@@ -42,6 +49,7 @@ func HandleUpload(w http.ResponseWriter, r *http.Request) {
 	}
 
 	receivedText := string(fileData)
+	receivedText = strings.TrimSpace(receivedText)
 	if receivedText == "" {
 		http.Error(w, "empty file", http.StatusBadRequest)
 		return
@@ -60,7 +68,7 @@ func HandleUpload(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprint(w, "Конвертированный текст: %s", convertedText)
+	fmt.Fprintf(w, "Конвертированный текст: %s", convertedText)
 }
 
 func writeToFile(fileName string, fileData string) error {

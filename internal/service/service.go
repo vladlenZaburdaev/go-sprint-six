@@ -13,7 +13,7 @@ func MorseCode(str string) bool {
 	}
 
 	for _, v := range str {
-		if v != '.' && v != '-' && v != '/' {
+		if v != '.' && v != '-' && v != '/' && v != ' ' && v != '\n' && v != '\r' {
 			return false
 		}
 	}
@@ -23,7 +23,6 @@ func MorseCode(str string) bool {
 	}
 
 	return true
-
 }
 
 func DetectAndConvert(str string) (string, error) {
@@ -33,15 +32,18 @@ func DetectAndConvert(str string) (string, error) {
 
 	if MorseCode(str) {
 		result := morse.ToText(str)
-		if result == " " {
+		if result == "" {
 			return "", errors.New("failed to convert input")
 		}
-	}
 
-	result := morse.ToMorse(str)
-	if result == " " {
-		return "", errors.New("failed to convert input")
-	}
+		return result, nil
+	} else {
+		result := morse.ToMorse(str)
 
-	return result, nil
+		if result == "" {
+			return "", errors.New("failed to convert input")
+		}
+
+		return result, nil
+	}
 }
