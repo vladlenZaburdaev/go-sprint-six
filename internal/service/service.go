@@ -2,7 +2,6 @@ package service
 
 import (
 	"errors"
-	"fmt"
 	"strings"
 
 	"github.com/Yandex-Practicum/go1fl-sprint6-final/pkg/morse"
@@ -31,19 +30,14 @@ func DetectAndConvert(str string) (string, error) {
 		return "", errors.New("empty line")
 	}
 
-	fmt.Printf("[DEBUG] Input: %q\n", str)
-	fmt.Printf("[DEBUG] MorseCode(): %v\n", MorseCode(str))
-
 	prefix := "Конвертированный текст: "
 	if strings.HasPrefix(str, prefix) {
 		str = strings.TrimPrefix(str, prefix)
 		str = strings.TrimSpace(str)
-		fmt.Printf("[DEBUG] After removing prefix: %q\n", str)
 	}
 
 	if MorseCode(str) {
 		result := morse.ToText(str)
-		fmt.Printf("[DEBUG] morse.ToText(): %q\n", result)
 		if result == "" {
 			return "", errors.New("failed to convert input")
 		}
@@ -51,7 +45,6 @@ func DetectAndConvert(str string) (string, error) {
 		return result, nil
 	} else {
 		result := morse.ToMorse(str)
-		fmt.Printf("[DEBUG] morse.ToMorse(): %q\n", result)
 
 		if result == "" {
 			return "", errors.New("failed to encode text")
