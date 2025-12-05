@@ -17,10 +17,10 @@ func NewServer(logger *log.Logger) *Server {
 	router := http.NewServeMux()
 
 	router.HandleFunc("/", handlers.HandleIndex)
-	router.HandleFunc("upload", handlers.HandleUpload)
+	router.HandleFunc("/upload", handlers.HandleUpload)
 
 	server := &http.Server{
-		Addr:         "localhost:8080",
+		Addr:         ":8080",
 		Handler:      router,
 		ErrorLog:     logger,
 		ReadTimeout:  5 * time.Second,
