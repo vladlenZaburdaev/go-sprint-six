@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 
 	"github.com/Yandex-Practicum/go1fl-sprint6-final/pkg/morse"
@@ -29,6 +30,9 @@ func DetectAndConvert(str string) (string, error) {
 	if str == "" {
 		return "", errors.New("empty line")
 	}
+
+	fmt.Printf("[DEBUG] Input: %q\n", str)
+	fmt.Printf("[DEBUG] MorseCode(): %v\n", MorseCode(str))
 
 	if MorseCode(str) {
 		result := morse.ToText(str)
