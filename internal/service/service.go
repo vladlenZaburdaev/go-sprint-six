@@ -36,24 +36,20 @@ func DetectAndConvert(str string) (string, error) {
 
 	if MorseCode(str) {
 		result := morse.ToText(str)
+		fmt.Printf("[DEBUG] morse.ToText(): %q\n", result)
 		if result == "" {
 			return "", errors.New("failed to convert input")
 		}
 
 		return result, nil
 	} else {
-		morseCode := morse.ToMorse(str)
-		fmt.Printf("[DEBUG] morse.ToMorse(): %q\n", morseCode)
-		if morseCode == "" {
+		result := morse.ToMorse(str)
+		fmt.Printf("[DEBUG] morse.ToMorse(): %q\n", result)
+
+		if result == "" {
 			return "", errors.New("failed to encode text")
 		}
 
-		textResult := morse.ToText(morseCode)
-		fmt.Printf("[DEBUG] Back to text: %q\n", textResult)
-		if textResult == "" {
-			return "", errors.New("failed to decode morse")
-		}
-
-		return textResult, nil
+		return result, nil
 	}
 }
