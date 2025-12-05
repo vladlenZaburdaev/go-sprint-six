@@ -42,12 +42,18 @@ func DetectAndConvert(str string) (string, error) {
 
 		return result, nil
 	} else {
-		result := morse.ToMorse(str)
-
-		if result == "" {
-			return "", errors.New("failed to convert input")
+		morseCode := morse.ToMorse(str)
+		fmt.Printf("[DEBUG] morse.ToMorse(): %q\n", morseCode)
+		if morseCode == "" {
+			return "", errors.New("failed to encode text")
 		}
 
-		return result, nil
+		textResult := morse.ToText(morseCode)
+		fmt.Printf("[DEBUG] Back to text: %q\n", textResult)
+		if textResult == "" {
+			return "", errors.New("failed to decode morse")
+		}
+
+		return textResult, nil
 	}
 }
